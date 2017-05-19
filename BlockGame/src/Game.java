@@ -18,7 +18,7 @@ public class Game extends SimpleApp {
 	String s = "Player 1";
 	String rules = "RULES:" + "\n -You may take as many blocks from ONE pile as you want but not from multiple piles "
 			+ "\n -You cannot take zero blocks on a turn" + "\n -Press the SPACEBAR when you are done with your turn"
-			+ "\n -The Player who takes the last block loses " 
+			+ "\n -The Player who takes the last block loses "
 			+ "\n -Press 1, 2, or 3 key to add a block to pile 1, 2, or 3 (you only have 2 extra blocks)";
 
 	boolean gameMode = true;
@@ -32,10 +32,10 @@ public class Game extends SimpleApp {
 
 	int w = 150;
 	int mode;
-	
+
 	int a = getWidth() / 2 - (w / 2);
 	int b = getHeight() / 2 - (w / 2);
-	
+
 	public static void main(String[] args) {
 		launch();
 	}
@@ -81,10 +81,10 @@ public class Game extends SimpleApp {
 
 		Text t5 = new Text("Player #2 extra Blocks: " + p2Count, 100, getHeight() / 4 + 30, 25, Color.BLACK);
 		t5.draw(gc);
-		
+
 		Text t6 = new Text("#1", 100, getHeight() / 4, 25, Color.BLACK);
 		t6.draw(gc);
-		
+
 		gc.setFill(Color.LIMEGREEN);
 
 		for (Block b : blocks1) {
@@ -116,8 +116,6 @@ public class Game extends SimpleApp {
 				c = Color.DODGERBLUE;
 			}
 		}
-
-		
 
 		if (turn == 1 && p1Count > 0) {
 			if (ke.getText().equals("1")) {
