@@ -15,6 +15,7 @@ public class Text {
 		this.size = size;
 		this.c = c;
 	}
+
 	public void draw(GraphicsContext gc) {
 		gc.setFill(c);
 		gc.setFont(javafx.scene.text.Font.font(size));

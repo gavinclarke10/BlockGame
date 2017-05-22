@@ -17,9 +17,10 @@ public class Game extends SimpleApp {
 
 	String s = "Player 1";
 	String rules = "RULES:" + "\n -You may take as many blocks from ONE pile as you want but not from multiple piles "
-			+ "\n -You cannot take zero blocks on a turn" + "\n -Press the SPACEBAR when you are done with your turn"
-			+ "\n -The Player who takes the last block loses "
-			+ "\n -Press 1, 2, or 3 key to add a block to pile 1, 2, or 3 (you only have 2 extra blocks)";
+			+ "\n -You must add or take away at least 1 one block per turn" 
+			+ "\n -Press the SPACEBAR when you are done with your turn"
+			+ "\n -The Player who takes the last block LOSES "
+			+ "\n -Press the 1, 2, or 3 key to add a block to pile 1, 2, or 3 (you only have 2 extra blocks)";
 
 	boolean gameMode = true;
 	boolean addMode = false;
@@ -32,9 +33,6 @@ public class Game extends SimpleApp {
 
 	int w = 150;
 	int mode;
-
-	int a = getWidth() / 2 - (w / 2);
-	int b = getHeight() / 2 - (w / 2);
 
 	public static void main(String[] args) {
 		launch();
@@ -68,6 +66,8 @@ public class Game extends SimpleApp {
 	public void draw(GraphicsContext gc) {
 		// TODO Auto-generated method stub
 
+		int x = getHeight() / 2 - (w / 2);
+
 		Text t1 = new Text(s + "'s turn", 100, 150, 50, c);
 		t1.draw(gc);
 
@@ -82,8 +82,14 @@ public class Game extends SimpleApp {
 		Text t5 = new Text("Player #2 extra Blocks: " + p2Count, 100, getHeight() / 4 + 30, 25, Color.BLACK);
 		t5.draw(gc);
 
-		Text t6 = new Text("#1", 100, getHeight() / 4, 25, Color.BLACK);
+		Text t6 = new Text("#1", (getWidth() / 2 - 300 - 15), x - 15, 30, Color.BLACK);
 		t6.draw(gc);
+
+		Text t7 = new Text("#2", (getWidth() / 2 - 15), x - 15, 30, Color.BLACK);
+		t7.draw(gc);
+
+		Text t8 = new Text("#3", (getWidth() / 2 + 300 - 15), x - 15, 30, Color.BLACK);
+		t8.draw(gc);
 
 		gc.setFill(Color.LIMEGREEN);
 
@@ -117,39 +123,49 @@ public class Game extends SimpleApp {
 			}
 		}
 
+		int a = getWidth() / 2 - (w / 2);
+		int b = getHeight() / 2 - (w / 2);
+
 		if (turn == 1 && p1Count > 0) {
 			if (ke.getText().equals("1")) {
 				pile1++;
 				p1Count--;
+				mode = 4;
 				blocks1.add(
 						new Block(Color.LIMEGREEN, (a - 300) + (blocks1.size() * 30), b + blocks1.size() * 30, w, 10));
 			}
 			if (ke.getText().equals("2")) {
 				pile2++;
 				p1Count--;
+				mode = 4;
 				blocks2.add(new Block(Color.LIMEGREEN, (a) + (blocks2.size() * 30), b + blocks2.size() * 30, w, 10));
 			}
 			if (ke.getText().equals("3")) {
 				pile3++;
 				p1Count--;
+				mode = 4;
 				blocks3.add(
 						new Block(Color.LIMEGREEN, (a + 300) + (blocks3.size() * 30), b + blocks3.size() * 30, w, 10));
 			}
-		} else if (turn == -1 && p2Count > 0) {
+		}
+		if (turn == -1 && p2Count > 0) {
 			if (ke.getText().equals("1")) {
 				pile2++;
 				p2Count--;
+				mode = 4;
 				blocks1.add(
 						new Block(Color.LIMEGREEN, (a - 300) + (blocks1.size() * 30), b + blocks1.size() * 30, w, 10));
 			}
 			if (ke.getText().equals("2")) {
 				pile2++;
 				p2Count--;
+				mode = 4;
 				blocks2.add(new Block(Color.LIMEGREEN, (a) + (blocks2.size() * 30), b + blocks2.size() * 30, w, 10));
 			}
 			if (ke.getText().equals("3")) {
 				pile3++;
 				p2Count--;
+				mode = 4;
 				blocks3.add(
 						new Block(Color.LIMEGREEN, (a + 300) + (blocks3.size() * 30), b + blocks3.size() * 30, w, 10));
 			}
