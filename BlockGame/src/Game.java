@@ -150,7 +150,7 @@ public class Game extends SimpleApp {
 		}
 		if (turn == -1 && p2Count > 0) {
 			if (ke.getText().equals("1")) {
-				pile2++;
+				pile1++;
 				p2Count--;
 				mode = 4;
 				blocks1.add(
