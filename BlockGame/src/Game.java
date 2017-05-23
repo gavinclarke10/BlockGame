@@ -9,7 +9,7 @@ public class Game extends SimpleApp {
 	int pile1 = 4;
 	int pile2 = 5;
 	int pile3 = 6;
-
+	
 	int turn = 1;
 
 	int p1Count = 2;
@@ -17,7 +17,7 @@ public class Game extends SimpleApp {
 
 	String s = "Player 1";
 	String rules = "RULES:" + "\n -You may take as many blocks from ONE pile as you want but not from multiple piles "
-			+ "\n -You must add or take away at least 1 one block per turn" 
+			+ "\n -You must add or take away at least 1 one block per turn"
 			+ "\n -Press the SPACEBAR when you are done with your turn"
 			+ "\n -The Player who takes the last block LOSES "
 			+ "\n -Press the 1, 2, or 3 key to add a block to pile 1, 2, or 3 (you only have 2 extra blocks)";
@@ -123,86 +123,67 @@ public class Game extends SimpleApp {
 			}
 		}
 
-		int a = getWidth() / 2 - (w / 2);
-		int b = getHeight() / 2 - (w / 2);
-
 		if (turn == 1 && p1Count > 0) {
-			if (ke.getText().equals("1")) {
-				pile1++;
-				p1Count--;
-				mode = 4;
-				blocks1.add(
-						new Block(Color.LIMEGREEN, (a - 300) + (blocks1.size() * 30), b + blocks1.size() * 30, w, 10));
-			}
-			if (ke.getText().equals("2")) {
-				pile2++;
-				p1Count--;
-				mode = 4;
-				blocks2.add(new Block(Color.LIMEGREEN, (a) + (blocks2.size() * 30), b + blocks2.size() * 30, w, 10));
-			}
-			if (ke.getText().equals("3")) {
-				pile3++;
-				p1Count--;
-				mode = 4;
-				blocks3.add(
-						new Block(Color.LIMEGREEN, (a + 300) + (blocks3.size() * 30), b + blocks3.size() * 30, w, 10));
-			}
+
+			addBlockP1(ke.getText(), "1", pile1, 4, blocks1, -300, "p1");
+			addBlockP1(ke.getText(), "2", pile2, 4, blocks2, 0, "p1");
+			addBlockP1(ke.getText(), "3", pile3, 4, blocks3, 300, "p1");
 		}
+
 		if (turn == -1 && p2Count > 0) {
-			if (ke.getText().equals("1")) {
-				pile1++;
-				p2Count--;
-				mode = 4;
-				blocks1.add(
-						new Block(Color.LIMEGREEN, (a - 300) + (blocks1.size() * 30), b + blocks1.size() * 30, w, 10));
-			}
-			if (ke.getText().equals("2")) {
-				pile2++;
-				p2Count--;
-				mode = 4;
-				blocks2.add(new Block(Color.LIMEGREEN, (a) + (blocks2.size() * 30), b + blocks2.size() * 30, w, 10));
-			}
-			if (ke.getText().equals("3")) {
-				pile3++;
-				p2Count--;
-				mode = 4;
-				blocks3.add(
-						new Block(Color.LIMEGREEN, (a + 300) + (blocks3.size() * 30), b + blocks3.size() * 30, w, 10));
-			}
+			addBlockP1(ke.getText(), "1", pile1, 4, blocks1, -300, "p2");
+			addBlockP1(ke.getText(), "2", pile2, 4, blocks2, 0, "p2");
+			addBlockP1(ke.getText(), "3", pile3, 4, blocks3, 300, "p2");
 		}
 	}
 
 	@Override
 	public void onMousePressed(MouseEvent me) {
-		if ((mode == 0 || mode == 1) && pile1 > 0 && Math.abs(blocks1.get(blocks1.size() - 1).getX() - me.getX()) < w
-				&& Math.abs(blocks1.get(blocks1.size() - 1).getY() - me.getY()) < w
-				&& me.getX() > blocks1.get(blocks1.size() - 1).getX()
-				&& me.getY() > blocks1.get(blocks1.size() - 1).getY()) {
-			blocks1.remove(blocks1.size() - 1);
-			pile1 = pile1 - 1;
-			mode = 1;
-		}
 
-		if ((mode == 0 || mode == 2) && pile2 > 0 && Math.abs(blocks2.get(blocks2.size() - 1).getX() - me.getX()) < w
-				&& Math.abs(blocks2.get(blocks2.size() - 1).getY() - me.getY()) < w
-				&& me.getX() > blocks2.get(blocks2.size() - 1).getX()
-				&& me.getY() > blocks2.get(blocks2.size() - 1).getY()) {
-			blocks2.remove(blocks2.size() - 1);
-			pile2 = pile2 - 1;
-			mode = 2;
-		}
-
-		if ((mode == 0 || mode == 3) && pile3 > 0 && Math.abs(blocks3.get(blocks3.size() - 1).getX() - me.getX()) < w
-				&& Math.abs(blocks3.get(blocks3.size() - 1).getY() - me.getY()) < w
-				&& me.getX() > blocks3.get(blocks3.size() - 1).getX()
-				&& me.getY() > blocks3.get(blocks3.size() - 1).getY()) {
-			blocks3.remove(blocks3.size() - 1);
-			pile3 = pile3 - 1;
-			mode = 3;
-		}
+		removeBlock(1, pile1, me.getX(), me.getY(), blocks1);
+		removeBlock(2, pile2, me.getX(), me.getY(), blocks2);
+		removeBlock(3, pile3, me.getX(), me.getY(), blocks3);
 
 		if (pile1 == 0 && pile2 == 0 && pile3 == 0) {
 			gameMode = false;
+		}
+	}
+
+	public void addBlockP1(String s, String num, int p, int m, ArrayList<Block> b, int loc, String c) {
+		if (s.equals(num)) {
+			p++;
+			//c--;
+			mode = m;
+			b.add(new Block(Color.LIMEGREEN, (getWidth() / 2 - (w / 2) + loc) + (b.size() * 30),
+					getHeight() / 2 - (w / 2) + b.size() * 30, w, 10));
+			if (c.equals("p1") == true)
+			{
+				p1Count--;
+			}
+			if (c.equals("p2") == true)
+			{
+				p2Count--;
+			}
+		}
+	}
+
+	public void addBlockP2(String s, String num, int p, int m, ArrayList<Block> b, int loc) {
+		if (s.equals(num)) {
+			p++;
+			p2Count--;
+			mode = m;
+			b.add(new Block(Color.LIMEGREEN, (getWidth() / 2 - (w / 2) + loc) + (b.size() * 30),
+					getHeight() / 2 - (w / 2) + b.size() * 30, w, 10));
+		}
+	}
+
+	public void removeBlock(int m, int p, double x, double y, ArrayList<Block> b) {
+		if ((mode == 0 || mode == m) && p > 0 && Math.abs(b.get(b.size() - 1).getX() - x) < w
+				&& Math.abs(b.get(b.size() - 1).getY() - y) < w && x > b.get(b.size() - 1).getX()
+				&& y > b.get(b.size() - 1).getY()) {
+			b.remove(b.size() - 1);
+			p = p - 1;
+			mode = m;
 		}
 	}
 }
