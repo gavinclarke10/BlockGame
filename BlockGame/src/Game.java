@@ -13,19 +13,20 @@ public class Game extends SimpleApp {
 	int p1Count = 2;
 	int p2Count = 2;
 	int mode;
-	
+
 	String s = "Player 1";
 	String rules = "RULES:" + "\n -You may take as many blocks from ONE pile as you want but not from multiple piles "
 			+ "\n -You must add or take away at least 1 one block per turn"
 			+ "\n -Press the SPACEBAR when you are done with your turn"
 			+ "\n -The Player who takes the last block LOSES "
 			+ "\n -Press the 1, 2, or 3 key to add a block to pile 1, 2, or 3 (you only have 2 extra blocks)";
-	
+
 	boolean gameMode = true;
 	Color turnColor = Color.RED;
 	Color blockColor = Color.LIMEGREEN;
 	Color textColor = Color.BLACK;
-	
+	Color loserTextColor = Color.BLUEVIOLET;
+
 	ArrayList<Block> blocks1 = new ArrayList<>();
 	ArrayList<Block> blocks2 = new ArrayList<>();
 	ArrayList<Block> blocks3 = new ArrayList<>();
@@ -62,8 +63,8 @@ public class Game extends SimpleApp {
 		// TODO Auto-generated method stub
 		Text turn = new Text(s + "'s turn", 100, 150, 50, turnColor);
 		Text rule = new Text(rules, getWidth() / 2 - 200, 100, 22, textColor);
-		Text loser = new Text(s.toUpperCase() + " LOSES!!!", getWidth() / 2 - 225, getHeight() / 2, 60, Color.BLUEVIOLET);
-		Text p1xtra = new Text("Player #1 extra Blocks: " + p1Count, 100, getHeight() / 4, 25,textColor);
+		Text loser = new Text(s.toUpperCase() + " LOSES!!!", getWidth() / 2 - 225, getHeight() / 2, 60, loserTextColor);
+		Text p1xtra = new Text("Player #1 extra Blocks: " + p1Count, 100, getHeight() / 4, 25, textColor);
 		Text p2xtra = new Text("Player #2 extra Blocks: " + p2Count, 100, getHeight() / 4 + 30, 25, textColor);
 		Text t1 = new Text("#1", (getWidth() / 2 - 300 - 15), getHeight() / 2 - (150 / 2) - 15, 30, textColor);
 		Text t2 = new Text("#2", (getWidth() / 2 - 15), getHeight() / 2 - (150 / 2) - 15, 30, textColor);
@@ -81,7 +82,7 @@ public class Game extends SimpleApp {
 			loser.draw(gc);
 		}
 
-		gc.setFill(Color.RED);
+		gc.setFill(blockColor);
 
 		for (Block b : blocks1) {
 			b.draw(gc);
@@ -97,20 +98,10 @@ public class Game extends SimpleApp {
 	@Override
 	public void onKeyPressed(KeyEvent ke) {
 		if (ke.getText().equals(" ") && mode != 0 && gameMode == true) {
-			mode = 0;
-			turn = turn * -1;
-			if (turn == 1) {
-				s = "Player 1";
-				turnColor = Color.RED;
-			}
-			if (turn == -1) {
-				s = "Player 2";
-				turnColor = Color.DODGERBLUE;
-			}
+			switchTurns();
 		}
 
 		if (turn == 1 && p1Count > 0) {
-
 			addBlock(ke.getText(), "1", pile1, blocks1, -300, "p1");
 			addBlock(ke.getText(), "2", pile2, blocks2, 0, "p1");
 			addBlock(ke.getText(), "3", pile3, blocks3, 300, "p1");
@@ -135,6 +126,19 @@ public class Game extends SimpleApp {
 		}
 	}
 
+	public void switchTurns() {
+		mode = 0;
+		turn = turn * -1;
+		if (turn == 1) {
+			s = "Player 1";
+			turnColor = Color.RED;
+		}
+		if (turn == -1) {
+			s = "Player 2";
+			turnColor = Color.DODGERBLUE;
+		}
+	}
+
 	public void addBlock(String s, String num, int p, ArrayList<Block> b, int loc, String counter) {
 		if (s.equals(num)) {
 			p++;
@@ -151,12 +155,26 @@ public class Game extends SimpleApp {
 	}
 
 	public void removeBlock(int m, int p, double x, double y, ArrayList<Block> b) {
-		if ((mode == 0 || mode == m) && p > 0 && Math.abs(b.get(b.size() - 1).getX() - x) < 150
+		if ((mode == 0 || mode == 1) && p > 0 && Math.abs(b.get(b.size() - 1).getX() - x) < 150
 				&& Math.abs(b.get(b.size() - 1).getY() - y) < 150 && x > b.get(b.size() - 1).getX()
 				&& y > b.get(b.size() - 1).getY()) {
 			b.remove(b.size() - 1);
 			p = p - 1;
-			mode = m;
+			mode = 1;
+		}
+		if ((mode == 0 || mode == 2) && p > 0 && Math.abs(b.get(b.size() - 1).getX() - x) < 150
+				&& Math.abs(b.get(b.size() - 1).getY() - y) < 150 && x > b.get(b.size() - 1).getX()
+				&& y > b.get(b.size() - 1).getY()) {
+			b.remove(b.size() - 1);
+			p = p - 1;
+			mode = 2;
+		}
+		if ((mode == 0 || mode == 3) && p > 0 && Math.abs(b.get(b.size() - 1).getX() - x) < 150
+				&& Math.abs(b.get(b.size() - 1).getY() - y) < 150 && x > b.get(b.size() - 1).getX()
+				&& y > b.get(b.size() - 1).getY()) {
+			b.remove(b.size() - 1);
+			p = p - 1;
+			mode = 3;
 		}
 	}
 }
