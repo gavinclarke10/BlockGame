@@ -117,10 +117,30 @@ public class Game extends SimpleApp {
 	@Override
 	public void onMousePressed(MouseEvent me) {
 
-		removeBlock(1, pile1, me.getX(), me.getY(), blocks1);
-		removeBlock(2, pile2, me.getX(), me.getY(), blocks2);
-		removeBlock(3, pile3, me.getX(), me.getY(), blocks3);
+		double x = me.getX();
+		double y = me.getY();
 
+		if ((mode == 0 || mode == 1) && pile1 > 0 && Math.abs(blocks1.get(blocks1.size() - 1).getX() - me.getX()) < 150
+				&& Math.abs(blocks1.get(blocks1.size() - 1).getY() - y) < 150
+				&& x > blocks1.get(blocks1.size() - 1).getX() && y > blocks1.get(blocks1.size() - 1).getY()) {
+			blocks1.remove(blocks1.size() - 1);
+			pile1 = pile1 - 1;
+			mode = 1;
+		}
+		if ((mode == 0 || mode == 2) && pile2 > 0 && Math.abs(blocks2.get(blocks2.size() - 1).getX() - x) < 150
+				&& Math.abs(blocks2.get(blocks2.size() - 1).getY() - y) < 150
+				&& x > blocks2.get(blocks2.size() - 1).getX() && y > blocks2.get(blocks2.size() - 1).getY()) {
+			blocks2.remove(blocks2.size() - 1);
+			pile2 = pile2 - 1;
+			mode = 2;
+		}
+		if ((mode == 0 || mode == 3) && pile3 > 0 && Math.abs(blocks3.get(blocks3.size() - 1).getX() - x) < 150
+				&& Math.abs(blocks3.get(blocks3.size() - 1).getY() - y) < 150
+				&& x > blocks3.get(blocks3.size() - 1).getX() && y > blocks3.get(blocks3.size() - 1).getY()) {
+			blocks3.remove(blocks3.size() - 1);
+			pile3 = pile3 - 1;
+			mode = 3;
+		}
 		if (pile1 == 0 && pile2 == 0 && pile3 == 0) {
 			gameMode = false;
 		}
@@ -151,30 +171,6 @@ public class Game extends SimpleApp {
 			if (counter.equals("p2") == true) {
 				p2Count--;
 			}
-		}
-	}
-
-	public void removeBlock(int m, int p, double x, double y, ArrayList<Block> b) {
-		if ((mode == 0 || mode == 1) && p > 0 && Math.abs(b.get(b.size() - 1).getX() - x) < 150
-				&& Math.abs(b.get(b.size() - 1).getY() - y) < 150 && x > b.get(b.size() - 1).getX()
-				&& y > b.get(b.size() - 1).getY()) {
-			b.remove(b.size() - 1);
-			p = p - 1;
-			mode = 1;
-		}
-		if ((mode == 0 || mode == 2) && p > 0 && Math.abs(b.get(b.size() - 1).getX() - x) < 150
-				&& Math.abs(b.get(b.size() - 1).getY() - y) < 150 && x > b.get(b.size() - 1).getX()
-				&& y > b.get(b.size() - 1).getY()) {
-			b.remove(b.size() - 1);
-			p = p - 1;
-			mode = 2;
-		}
-		if ((mode == 0 || mode == 3) && p > 0 && Math.abs(b.get(b.size() - 1).getX() - x) < 150
-				&& Math.abs(b.get(b.size() - 1).getY() - y) < 150 && x > b.get(b.size() - 1).getX()
-				&& y > b.get(b.size() - 1).getY()) {
-			b.remove(b.size() - 1);
-			p = p - 1;
-			mode = 3;
 		}
 	}
 }
