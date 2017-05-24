@@ -102,15 +102,61 @@ public class Game extends SimpleApp {
 		}
 
 		if (turn == 1 && p1Count > 0) {
-			addBlock(ke.getText(), "1", pile1, blocks1, -300, "p1");
-			addBlock(ke.getText(), "2", pile2, blocks2, 0, "p1");
-			addBlock(ke.getText(), "3", pile3, blocks3, 300, "p1");
+			if (ke.getText().equals("1")) {
+				pile1++;
+				mode = 4;
+				p1Count--;
+				blocks1.add(new Block(blockColor, (getWidth() / 2 - (150 / 2) - 300) + (blocks1.size() * 30),
+						getHeight() / 2 - (150 / 2) + blocks1.size() * 30, 150, 10));
+			}
+			if (ke.getText().equals("2")) {
+				pile2++;
+				mode = 4;
+				p1Count--;
+				blocks2.add(new Block(blockColor, (getWidth() / 2 - (150 / 2)) + (blocks2.size() * 30),
+						getHeight() / 2 - (150 / 2) + blocks2.size() * 30, 150, 10));
+			}
+			if (ke.getText().equals("3")) {
+				pile3++;
+				mode = 4;
+				p1Count--;
+				blocks3.add(new Block(blockColor, (getWidth() / 2 - (150 / 2) + 300) + (blocks3.size() * 30),
+						getHeight() / 2 - (150 / 2) + blocks3.size() * 30, 150, 10));
+			}
+			/*
+			 * addBlock(ke.getText(), "1", pile1, blocks1, -300, "p1");
+			 * addBlock(ke.getText(), "2", pile2, blocks2, 0, "p1");
+			 * addBlock(ke.getText(), "3", pile3, blocks3, 300, "p1");
+			 */
 		}
 
 		if (turn == -1 && p2Count > 0) {
-			addBlock(ke.getText(), "1", pile1, blocks1, -300, "p2");
-			addBlock(ke.getText(), "2", pile2, blocks2, 0, "p2");
-			addBlock(ke.getText(), "3", pile3, blocks3, 300, "p2");
+			if (ke.getText().equals("1")) {
+				pile1++;
+				mode = 4;
+				p2Count--;
+				blocks1.add(new Block(blockColor, (getWidth() / 2 - (150 / 2) - 300) + (blocks1.size() * 30),
+						getHeight() / 2 - (150 / 2) + blocks1.size() * 30, 150, 10));
+			}
+			if (ke.getText().equals("2")) {
+				pile2++;
+				mode = 4;
+				p2Count--;
+				blocks2.add(new Block(blockColor, (getWidth() / 2 - (150 / 2)) + (blocks2.size() * 30),
+						getHeight() / 2 - (150 / 2) + blocks2.size() * 30, 150, 10));
+			}
+			if (ke.getText().equals("3")) {
+				pile3++;
+				mode = 4;
+				p2Count--;
+				blocks3.add(new Block(blockColor, (getWidth() / 2 - (150 / 2) + 300) + (blocks3.size() * 30),
+						getHeight() / 2 - (150 / 2) + blocks3.size() * 30, 150, 10));
+				/*
+				 * addBlock(ke.getText(), "1", pile1, blocks1, -300, "p2");
+				 * addBlock(ke.getText(), "2", pile2, blocks2, 0, "p2");
+				 * addBlock(ke.getText(), "3", pile3, blocks3, 300, "p2");
+				 */
+			}
 		}
 	}
 
@@ -159,7 +205,7 @@ public class Game extends SimpleApp {
 		}
 	}
 
-	public void addBlock(String s, String num, int p, ArrayList<Block> b, int loc, String counter) {
+	/* public void addBlock(String s, String num, int p, ArrayList<Block> b, int loc, String counter) {
 		if (s.equals(num)) {
 			p++;
 			mode = 4;
@@ -173,4 +219,5 @@ public class Game extends SimpleApp {
 			}
 		}
 	}
+	*/
 }
