@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import javafx.scene.input.KeyEvent;
+import javafx.event.EventType;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -19,9 +20,12 @@ public class Game extends SimpleApp {
 			+ "\n -You must add or take away at least 1 one block per turn"
 			+ "\n -Press the SPACEBAR when you are done with your turn"
 			+ "\n -The Player who takes the last block LOSES "
-			+ "\n -Press the 1, 2, or 3 key to add a block to pile 1, 2, or 3 (you only have 2 extra blocks)";
+			+ "\n -drag and drop your 2 extra blocks onto the pile you want to add to ";
 
 	boolean gameMode = true;
+	boolean dragMode = false;
+	boolean dragMode2 = false;
+
 	Color turnColor = Color.RED;
 	Color blockColor = Color.LIMEGREEN;
 	Color textColor = Color.BLACK;
@@ -30,6 +34,8 @@ public class Game extends SimpleApp {
 	ArrayList<Block> blocks1 = new ArrayList<>();
 	ArrayList<Block> blocks2 = new ArrayList<>();
 	ArrayList<Block> blocks3 = new ArrayList<>();
+	ArrayList<Block> p1 = new ArrayList<>();
+	ArrayList<Block> p2 = new ArrayList<>();
 
 	public static void main(String[] args) {
 		launch();
@@ -38,7 +44,6 @@ public class Game extends SimpleApp {
 	@Override
 	public void updateAnimation(long time) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -56,16 +61,27 @@ public class Game extends SimpleApp {
 			blocks3.add(new Block(blockColor, (getWidth() / 2 - (150 / 2) + 300) + (k * 30),
 					getHeight() / 2 - (150 / 2) + k * 30, 150, 10));
 		}
+		
+		for (int k = 0; k < p1Count; k++) {
+			p1.add(new Block(Color.RED, 150 - (40 * k), getHeight() - (150 / 2), 150, 10));
+		}
+
+		for (int k = 0; k < p2Count; k++) {
+			p2.add(new Block(Color.DODGERBLUE, getWidth() - 150 - (40 * k) - 150 / 2, getHeight() - (150 / 2), 150, 10));
+		}
 	}
 
 	@Override
 	public void draw(GraphicsContext gc) {
 		// TODO Auto-generated method stub
+
 		Text turn = new Text(s + "'s turn", 100, 150, 50, turnColor);
 		Text rule = new Text(rules, getWidth() / 2 - 200, 100, 22, textColor);
 		Text loser = new Text(s.toUpperCase() + " LOSES!!!", getWidth() / 2 - 225, getHeight() / 2, 60, loserTextColor);
-		Text p1xtra = new Text("Player #1 extra Blocks: " + p1Count, 100, getHeight() / 4, 25, textColor);
-		Text p2xtra = new Text("Player #2 extra Blocks: " + p2Count, 100, getHeight() / 4 + 30, 25, textColor);
+		Text p1xtra = new Text("Player #1 extra Blocks: " + p1Count, 150 - 75, getHeight() - (150 / 2) - 15, 25,
+				Color.RED);
+		Text p2xtra = new Text("Player #2 extra Blocks: " + p2Count, getWidth() - 150 - 150 / 2 - 75,
+				getHeight() - (150 / 2) - 15, 25, Color.DODGERBLUE);
 		Text t1 = new Text("#1", (getWidth() / 2 - 300 - 15), getHeight() / 2 - (150 / 2) - 15, 30, textColor);
 		Text t2 = new Text("#2", (getWidth() / 2 - 15), getHeight() / 2 - (150 / 2) - 15, 30, textColor);
 		Text t3 = new Text("#3", (getWidth() / 2 + 300 - 15), getHeight() / 2 - (150 / 2) - 15, 30, textColor);
@@ -93,6 +109,15 @@ public class Game extends SimpleApp {
 		for (Block b : blocks3) {
 			b.draw(gc);
 		}
+		
+		gc.setFill(Color.RED);
+		for (Block b : p1) {
+			b.draw(gc);
+		}
+		gc.setFill(Color.DODGERBLUE);
+		for (Block b : p2) {
+			b.draw(gc);
+		}
 	}
 
 	@Override
@@ -100,73 +125,162 @@ public class Game extends SimpleApp {
 		if (ke.getText().equals(" ") && mode != 0 && gameMode == true) {
 			switchTurns();
 		}
+	}
 
-		if (turn == 1 && p1Count > 0) {
-			if (ke.getText().equals("1")) {
-				pile1++;
-				mode = 4;
-				p1Count--;
-				blocks1.add(new Block(blockColor, (getWidth() / 2 - (150 / 2) - 300) + (blocks1.size() * 30),
-						getHeight() / 2 - (150 / 2) + blocks1.size() * 30, 150, 10));
-			}
-			if (ke.getText().equals("2")) {
-				pile2++;
-				mode = 4;
-				p1Count--;
-				blocks2.add(new Block(blockColor, (getWidth() / 2 - (150 / 2)) + (blocks2.size() * 30),
-						getHeight() / 2 - (150 / 2) + blocks2.size() * 30, 150, 10));
-			}
-			if (ke.getText().equals("3")) {
-				pile3++;
-				mode = 4;
-				p1Count--;
-				blocks3.add(new Block(blockColor, (getWidth() / 2 - (150 / 2) + 300) + (blocks3.size() * 30),
-						getHeight() / 2 - (150 / 2) + blocks3.size() * 30, 150, 10));
-			}
-			/*
-			 * addBlock(ke.getText(), "1", pile1, blocks1, -300, "p1");
-			 * addBlock(ke.getText(), "2", pile2, blocks2, 0, "p1");
-			 * addBlock(ke.getText(), "3", pile3, blocks3, 300, "p1");
-			 */
+	/*----- OLD 1 2 3 key pressing method -----
+	 * if (turn == 1 && p1Count > 0) { if (ke.getText().equals("1")) { pile1++;
+	 * mode = 4; p1Count--; p1.remove(p1.size() - 1); blocks1.add(new
+	 * Block(blockColor, (getWidth() / 2 - (150 / 2) - 300) + (blocks1.size() *
+	 * 30), getHeight() / 2 - (150 / 2) + blocks1.size() * 30, 150, 10)); } if
+	 * (ke.getText().equals("2")) { pile2++; mode = 4; p1Count--;
+	 * p1.remove(p1.size() - 1); blocks2.add(new Block(blockColor, (getWidth() /
+	 * 2 - (150 / 2)) + (blocks2.size() * 30), getHeight() / 2 - (150 / 2) +
+	 * blocks2.size() * 30, 150, 10)); } if (ke.getText().equals("3")) {
+	 * pile3++; mode = 4; p1Count--; p1.remove(p1.size() - 1); blocks3.add(new
+	 * Block(blockColor, (getWidth() / 2 - (150 / 2) + 300) + (blocks3.size() *
+	 * 30), getHeight() / 2 - (150 / 2) + blocks3.size() * 30, 150, 10)); }
+	 * 
+	 * addBlock(ke.getText(), "1", pile1, blocks1, -300, "p1");
+	 * addBlock(ke.getText(), "2", pile2, blocks2, 0, "p1");
+	 * addBlock(ke.getText(), "3", pile3, blocks3, 300, "p1");
+	 * 
+	 * } if (turn == -1 && p2Count > 0) { if (ke.getText().equals("1")) {
+	 * pile1++; mode = 4; p2Count--; p2.remove(p2.size() - 1); blocks1.add(new
+	 * Block(blockColor, (getWidth() / 2 - (150 / 2) - 300) + (blocks1.size() *
+	 * 30), getHeight() / 2 - (150 / 2) + blocks1.size() * 30, 150, 10)); } if
+	 * (ke.getText().equals("2")) { pile2++; mode = 4; p2Count--;
+	 * p2.remove(p2.size() - 1); blocks2.add(new Block(blockColor, (getWidth() /
+	 * 2 - (150 / 2)) + (blocks2.size() * 30), getHeight() / 2 - (150 / 2) +
+	 * blocks2.size() * 30, 150, 10)); } if (ke.getText().equals("3")) {
+	 * pile3++; mode = 4; p2Count--; p2.remove(p2.size() - 1); blocks3.add(new
+	 * Block(blockColor, (getWidth() / 2 - (150 / 2) + 300) + (blocks3.size() *
+	 * 30), getHeight() / 2 - (150 / 2) + blocks3.size() * 30, 150, 10)); /*
+	 * addBlock(ke.getText(), "1", pile1, blocks1, -300, "p2");
+	 * addBlock(ke.getText(), "2", pile2, blocks2, 0, "p2");
+	 * addBlock(ke.getText(), "3", pile3, blocks3, 300, "p2");
+	 */
+
+	@Override
+	public void onMouseDragged(MouseEvent me) {
+		if (dragMode == true) {
+			p1.get(p1.size() - 1).setX(me.getX());
+			p1.get(p1.size() - 1).setY(me.getY());
+		}
+		if (dragMode2 == true) {
+			p2.get(p2.size() - 1).setX(me.getX());
+			p2.get(p2.size() - 1).setY(me.getY());
 		}
 
-		if (turn == -1 && p2Count > 0) {
-			if (ke.getText().equals("1")) {
-				pile1++;
-				mode = 4;
-				p2Count--;
-				blocks1.add(new Block(blockColor, (getWidth() / 2 - (150 / 2) - 300) + (blocks1.size() * 30),
-						getHeight() / 2 - (150 / 2) + blocks1.size() * 30, 150, 10));
-			}
-			if (ke.getText().equals("2")) {
-				pile2++;
-				mode = 4;
-				p2Count--;
-				blocks2.add(new Block(blockColor, (getWidth() / 2 - (150 / 2)) + (blocks2.size() * 30),
-						getHeight() / 2 - (150 / 2) + blocks2.size() * 30, 150, 10));
-			}
-			if (ke.getText().equals("3")) {
-				pile3++;
-				mode = 4;
-				p2Count--;
-				blocks3.add(new Block(blockColor, (getWidth() / 2 - (150 / 2) + 300) + (blocks3.size() * 30),
-						getHeight() / 2 - (150 / 2) + blocks3.size() * 30, 150, 10));
-				/*
-				 * addBlock(ke.getText(), "1", pile1, blocks1, -300, "p2");
-				 * addBlock(ke.getText(), "2", pile2, blocks2, 0, "p2");
-				 * addBlock(ke.getText(), "3", pile3, blocks3, 300, "p2");
-				 */
-			}
+		if (p1Count > 0 && p1.get(p1.size() - 1).getX() > getWidth() / 2 - 300 - 150 / 2
+				&& p1.get(p1.size() - 1).getX() < getWidth() / 2 - 300 - 150 / 2 + 200
+				&& p1.get(p1.size() - 1).getY() > getHeight() / 2
+				&& p1.get(p1.size() - 1).getY() < getHeight() / 2 + 150) {
+			pile1++;
+			mode = 4;
+			p1Count--;
+			p1.remove(p1.size() - 1);
+			blocks1.add(new Block(blockColor, (getWidth() / 2 - (150 / 2) - 300) + (blocks1.size() * 30),
+					getHeight() / 2 - (150 / 2) + blocks1.size() * 30, 150, 10));
+			dragMode = false;
+		}
+		if (p2Count > 0 && p2.get(p2.size() - 1).getX() > getWidth() / 2 - 300 - 150 / 2
+				&& p2.get(p2.size() - 1).getX() < getWidth() / 2 - 300 - 150 / 2 + 200
+				&& p2.get(p2.size() - 1).getY() > getHeight() / 2
+				&& p2.get(p2.size() - 1).getY() < getHeight() / 2 + 150) {
+			pile1++;
+			mode = 4;
+			p2Count--;
+			p2.remove(p2.size() - 1);
+			blocks1.add(new Block(blockColor, (getWidth() / 2 - (150 / 2) - 300) + (blocks1.size() * 30),
+					getHeight() / 2 - (150 / 2) + blocks1.size() * 30, 150, 10));
+			dragMode2 = false;
+		}
+
+		if (p1Count > 0 && p1.get(p1.size() - 1).getX() > getWidth() / 2 - 150 / 2
+				&& p1.get(p1.size() - 1).getX() < getWidth() / 2 - 150 / 2 + 200
+				&& p1.get(p1.size() - 1).getY() > getHeight() / 2
+				&& p1.get(p1.size() - 1).getY() < getHeight() / 2 + 150) {
+			pile2++;
+			mode = 4;
+			p1Count--;
+			p1.remove(p1.size() - 1);
+			blocks2.add(new Block(blockColor, (getWidth() / 2 - (150 / 2)) + (blocks2.size() * 30),
+					getHeight() / 2 - (150 / 2) + blocks2.size() * 30, 150, 10));
+			dragMode = false;
+		}
+		if (p2Count > 0 && p2.get(p2.size() - 1).getX() > getWidth() / 2 - 150 / 2
+				&& p2.get(p2.size() - 1).getX() < getWidth() / 2 - 150 / 2 + 200
+				&& p2.get(p2.size() - 1).getY() > getHeight() / 2
+				&& p2.get(p2.size() - 1).getY() < getHeight() / 2 + 150) {
+			pile2++;
+			mode = 4;
+			p2Count--;
+			p2.remove(p2.size() - 1);
+			blocks2.add(new Block(blockColor, (getWidth() / 2 - (150 / 2)) + (blocks2.size() * 30),
+					getHeight() / 2 - (150 / 2) + blocks2.size() * 30, 150, 10));
+			dragMode2 = false;
+		}
+
+		if (p1Count > 0 && p1.get(p1.size() - 1).getX() > getWidth() / 2 + 300 - 150 / 2
+				&& p1.get(p1.size() - 1).getX() < getWidth() / 2 + 300 - 150 / 2 + 200
+				&& p1.get(p1.size() - 1).getY() > getHeight() / 2
+				&& p1.get(p1.size() - 1).getY() < getHeight() / 2 + 150) {
+			pile3++;
+			mode = 4;
+			p1Count--;
+			p1.remove(p1.size() - 1);
+			blocks3.add(new Block(blockColor, (getWidth() / 2 - (150 / 2) + 300) + (blocks3.size() * 30),
+					getHeight() / 2 - (150 / 2) + blocks3.size() * 30, 150, 10));
+			dragMode = false;
+		}
+		if (p2Count > 0 && p2.get(p2.size() - 1).getX() > getWidth() / 2 + 300 - 150 / 2
+				&& p2.get(p2.size() - 1).getX() < getWidth() / 2 + 300 - 150 / 2 + 200
+				&& p2.get(p2.size() - 1).getY() > getHeight() / 2
+				&& p2.get(p2.size() - 1).getY() < getHeight() / 2 + 150) {
+			pile3++;
+			mode = 4;
+			p2Count--;
+			p2.remove(p2.size() - 1);
+			blocks3.add(new Block(blockColor, (getWidth() / 2 - (150 / 2) + 300) + (blocks3.size() * 30),
+					getHeight() / 2 - (150 / 2) + blocks3.size() * 30, 150, 10));
+			dragMode2 = false;
 		}
 	}
 
-	@Override
+	public void onMouseReleased(MouseEvent m) {
+		if (p1Count > 0) {
+			p1.get(p1.size() - 1).setX(150 - (40));
+			p1.get(p1.size() - 1).setY(getHeight() - (150 / 2));
+		}
+
+		if (p2Count > 0) {
+			p2.get(p2.size() - 1).setX(getWidth() - 150 - (40) - 150 / 2);
+			p2.get(p2.size() - 1).setY(getHeight() - (150 / 2));
+		}
+	}
+
 	public void onMousePressed(MouseEvent me) {
 
+		if (p1Count > 0 && turn == 1) {
+			if (p1.get(p1.size() - 1).getX() + 150 > me.getX() && p1.get(p1.size() - 1).getY() + 150 > me.getY()
+					&& p1.get(p1.size() - 1).getX() < me.getX() && p1.get(p1.size() - 1).getY() < me.getY()) {
+				dragMode = true;
+			} else {
+				dragMode = false;
+			}
+		}
+		if (p2Count > 0 && turn == -1) {
+			if (p2.get(p2.size() - 1).getX() + 150 > me.getX() && p2.get(p2.size() - 1).getY() + 150 > me.getY()
+					&& p2.get(p2.size() - 1).getX() < me.getX() && p2.get(p2.size() - 1).getY() < me.getY()) {
+				dragMode2 = true;
+			} else {
+				dragMode2 = false;
+			}
+		}
 		double x = me.getX();
 		double y = me.getY();
 
-		if ((mode == 0 || mode == 1) && pile1 > 0 && Math.abs(blocks1.get(blocks1.size() - 1).getX() - me.getX()) < 150
+		if ((mode == 0 || mode == 1) && pile1 > 0 && Math.abs(blocks1.get(blocks1.size() - 1).getX() - x) < 150
 				&& Math.abs(blocks1.get(blocks1.size() - 1).getY() - y) < 150
 				&& x > blocks1.get(blocks1.size() - 1).getX() && y > blocks1.get(blocks1.size() - 1).getY()) {
 			blocks1.remove(blocks1.size() - 1);
@@ -204,20 +318,4 @@ public class Game extends SimpleApp {
 			turnColor = Color.DODGERBLUE;
 		}
 	}
-
-	/* public void addBlock(String s, String num, int p, ArrayList<Block> b, int loc, String counter) {
-		if (s.equals(num)) {
-			p++;
-			mode = 4;
-			b.add(new Block(blockColor, (getWidth() / 2 - (150 / 2) + loc) + (b.size() * 30),
-					getHeight() / 2 - (150 / 2) + b.size() * 30, 150, 10));
-			if (counter.equals("p1") == true) {
-				p1Count--;
-			}
-			if (counter.equals("p2") == true) {
-				p2Count--;
-			}
-		}
-	}
-	*/
 }

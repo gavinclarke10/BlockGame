@@ -21,4 +21,12 @@ public class Text {
 		gc.setFont(javafx.scene.text.Font.font(size));
 		gc.fillText(s, x, y);
 	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
 }
