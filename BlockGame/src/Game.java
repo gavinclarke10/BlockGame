@@ -233,8 +233,7 @@ public class Game extends SimpleApp {
 	}
 
 	public void onMouseReleased(MouseEvent m3) {
-		if (draggedOn1(-300)==true) {
-			System.out.println("yyeyeyey");
+		if (draggedOn1(-300) == true) {
 			pile1++;
 			mode = 4;
 			p1Count--;
@@ -243,10 +242,7 @@ public class Game extends SimpleApp {
 					getHeight() / 2 - d + (blocks1.size() * 30), d * 2, 10));
 			dragMode = false;
 		}
-		if (p2Count > 0 && p2.get(p2.size() - 1).getX() > getWidth() / 2 - 300 - d
-				&& p2.get(p2.size() - 1).getX() < getWidth() / 2 - 300 - d + 200
-				&& p2.get(p2.size() - 1).getY() > getHeight() / 2 - 200
-				&& p2.get(p2.size() - 1).getY() < getHeight() / 2 + 200) {
+		if (draggedOn2(-300) == true) {
 			pile1++;
 			mode = 4;
 			p2Count--;
@@ -256,10 +252,7 @@ public class Game extends SimpleApp {
 			dragMode2 = false;
 		}
 
-		if (p1Count > 0 && p1.get(p1.size() - 1).getX() > getWidth() / 2 - d
-				&& p1.get(p1.size() - 1).getX() < getWidth() / 2 - d + 200
-				&& p1.get(p1.size() - 1).getY() > getHeight() / 2 - 200
-				&& p1.get(p1.size() - 1).getY() < getHeight() / 2 + 200) {
+		if (draggedOn1(0) == true) {
 			pile2++;
 			mode = 4;
 			p1Count--;
@@ -268,10 +261,7 @@ public class Game extends SimpleApp {
 					getHeight() / 2 - d + blocks2.size() * 30, d * 2, 10));
 			dragMode = false;
 		}
-		if (p2Count > 0 && p2.get(p2.size() - 1).getX() > getWidth() / 2 - d
-				&& p2.get(p2.size() - 1).getX() < getWidth() / 2 - d + 200
-				&& p2.get(p2.size() - 1).getY() > getHeight() / 2 - 200
-				&& p2.get(p2.size() - 1).getY() < getHeight() / 2 + 200) {
+		if (draggedOn2(0) == true) {
 			pile2++;
 			mode = 4;
 			p2Count--;
@@ -281,10 +271,7 @@ public class Game extends SimpleApp {
 			dragMode2 = false;
 		}
 
-		if (p1Count > 0 && p1.get(p1.size() - 1).getX() > getWidth() / 2 + 300 - d
-				&& p1.get(p1.size() - 1).getX() < getWidth() / 2 + 300 - d + 200
-				&& p1.get(p1.size() - 1).getY() > getHeight() / 2 - 200
-				&& p1.get(p1.size() - 1).getY() < getHeight() / 2 + 200) {
+		if (draggedOn1(300) == true) {
 			pile3++;
 			mode = 4;
 			p1Count--;
@@ -293,10 +280,7 @@ public class Game extends SimpleApp {
 					getHeight() / 2 - d + blocks3.size() * 30, d * 2, 10));
 			dragMode = false;
 		}
-		if (p2Count > 0 && p2.get(p2.size() - 1).getX() > getWidth() / 2 + 300 - d
-				&& p2.get(p2.size() - 1).getX() < getWidth() / 2 + 300 - d + 200
-				&& p2.get(p2.size() - 1).getY() > getHeight() / 2 - 200
-				&& p2.get(p2.size() - 1).getY() < getHeight() / 2 + 200) {
+		if (draggedOn2(300) == true) {
 			pile3++;
 			mode = 4;
 			p2Count--;
