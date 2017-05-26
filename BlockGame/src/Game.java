@@ -171,73 +171,24 @@ public class Game extends SimpleApp {
 		}
 	}
 
-	public void onMouseReleased(MouseEvent m3) {
-		if (draggedOn1(-300) == true) {
-			pile1++;
-			mode = 4;
-			p1Count--;
-			p1.remove(p1.size() - 1);
-			blocks1.add(new Block(blockColor, (getWidth() / 2 - d - 300) + (blocks1.size() * 30),
-					getHeight() / 2 - d + blocks1.size() * 30, d * 2, 10));
-			dragMode = false;
+	public boolean draggedOn1(int x) {
+		if (p1Count > 0 && p1.get(p1.size() - 1).getX() > getWidth() / 2 + x - d
+				&& p1.get(p1.size() - 1).getX() < getWidth() / 2 + x - d + 200
+				&& p1.get(p1.size() - 1).getY() > getHeight() / 2 - 200
+				&& p1.get(p1.size() - 1).getY() < getHeight() / 2 + 200) {
+			return true;
 		}
-		if (draggedOn2(-300) == true) {
-			pile1++;
-			mode = 4;
-			p2Count--;
-			p2.remove(p2.size() - 1);
-			blocks1.add(new Block(blockColor, (getWidth() / 2 - d - 300) + (blocks1.size() * 30),
-					getHeight() / 2 - d + blocks1.size() * 30, d * 2, 10));
-			dragMode2 = false;
-		}
+		return false;
+	}
 
-		if (draggedOn1(0) == true) {
-			pile2++;
-			mode = 4;
-			p1Count--;
-			p1.remove(p1.size() - 1);
-			blocks2.add(new Block(blockColor, (getWidth() / 2 - d) + (blocks2.size() * 30),
-					getHeight() / 2 - d + blocks2.size() * 30, d * 2, 10));
-			dragMode = false;
+	public boolean draggedOn2(int x) {
+		if (p2Count > 0 && p2.get(p2.size() - 1).getX() > getWidth() / 2 + x - d
+				&& p2.get(p2.size() - 1).getX() < getWidth() / 2 + x - d + 200
+				&& p2.get(p2.size() - 1).getY() > getHeight() / 2 - 200
+				&& p2.get(p2.size() - 1).getY() < getHeight() / 2 + 200) {
+			return true;
 		}
-		if (draggedOn2(0) == true) {
-			pile2++;
-			mode = 4;
-			p2Count--;
-			p2.remove(p2.size() - 1);
-			blocks2.add(new Block(blockColor, (getWidth() / 2 - d) + (blocks2.size() * 30),
-					getHeight() / 2 - d + blocks2.size() * 30, d * 2, 10));
-			dragMode2 = false;
-		}
-
-		if (draggedOn1(300) == true) {
-			pile3++;
-			mode = 4;
-			p1Count--;
-			p1.remove(p1.size() - 1);
-			blocks3.add(new Block(blockColor, (getWidth() / 2 - d + 300) + (blocks3.size() * 30),
-					getHeight() / 2 - d + blocks3.size() * 30, d * 2, 10));
-			dragMode = false;
-		}
-		if (draggedOn2(300) == true) {
-			pile3++;
-			mode = 4;
-			p2Count--;
-			p2.remove(p2.size() - 1);
-			blocks3.add(new Block(blockColor, (getWidth() / 2 - d + 300) + (blocks3.size() * 30),
-					getHeight() / 2 - d + blocks3.size() * 30, d * 2, 10));
-			dragMode2 = false;
-		}
-
-		if (p1Count > 0) {
-			p1.get(p1.size() - 1).setX(150 - (40));
-			p1.get(p1.size() - 1).setY(getHeight() - d + (30));
-		}
-
-		if (p2Count > 0) {
-			p2.get(p2.size() - 1).setX(getWidth() - d * 2 - (40) - 150 / 2);
-			p2.get(p2.size() - 1).setY(getHeight() - d + (30));
-		}
+		return false;
 	}
 
 	public void onMousePressed(MouseEvent me) {
@@ -261,37 +212,108 @@ public class Game extends SimpleApp {
 			}
 		}
 
-		if (removeBlock(1,pile1,blocks1,x,y)==true){
-		/*((mode == 0 || mode == 1) && pile1 > 0 && Math.abs(blocks1.get(blocks1.size() - 1).getX() - x) < d * 2
-				&& Math.abs(blocks1.get(blocks1.size() - 1).getY() - y) < d * 2
-				&& x > blocks1.get(blocks1.size() - 1).getX() && y > blocks1.get(blocks1.size() - 1).getY()) {
-				*/
+		if (removeBlock(1, pile1, blocks1, x, y) == true) {
 			blocks1.remove(blocks1.size() - 1);
 			pile1 = pile1 - 1;
 			mode = 1;
 		}
-		if (removeBlock(2,pile2,blocks2,x,y)==true){
-			/*((mode == 0 || mode == 2) && pile2 > 0 && Math.abs(blocks2.get(blocks2.size() - 1).getX() - x) < d * 2
-		}
-				&& Math.abs(blocks2.get(blocks2.size() - 1).getY() - y) < d * 2
-				&& x > blocks2.get(blocks2.size() - 1).getX() && y > blocks2.get(blocks2.size() - 1).getY()) {
-				*/
+		if (removeBlock(2, pile2, blocks2, x, y) == true) {
 			blocks2.remove(blocks2.size() - 1);
 			pile2 = pile2 - 1;
 			mode = 2;
 		}
-		if (removeBlock(3,pile3,blocks3,x,y)==true){
-			/* ((mode == 0 || mode == 3) && pile3 > 0 && Math.abs(blocks3.get(blocks3.size() - 1).getX() - x) < d * 2
-		}
-				&& Math.abs(blocks3.get(blocks3.size() - 1).getY() - y) < d * 2
-				&& x > blocks3.get(blocks3.size() - 1).getX() && y > blocks3.get(blocks3.size() - 1).getY()) {
-				*/
+		if (removeBlock(3, pile3, blocks3, x, y) == true) {
 			blocks3.remove(blocks3.size() - 1);
 			pile3 = pile3 - 1;
 			mode = 3;
 		}
 		if (pile1 == 0 && pile2 == 0 && pile3 == 0) {
 			gameMode = false;
+		}
+	}
+
+	public void onMouseReleased(MouseEvent m3) {
+		if (draggedOn1(-300)==true) {
+			System.out.println("yyeyeyey");
+			pile1++;
+			mode = 4;
+			p1Count--;
+			p1.remove(p1.size() - 1);
+			blocks1.add(new Block(blockColor, getWidth() / 2 - d - 300 + (blocks1.size() * 30),
+					getHeight() / 2 - d + (blocks1.size() * 30), d * 2, 10));
+			dragMode = false;
+		}
+		if (p2Count > 0 && p2.get(p2.size() - 1).getX() > getWidth() / 2 - 300 - d
+				&& p2.get(p2.size() - 1).getX() < getWidth() / 2 - 300 - d + 200
+				&& p2.get(p2.size() - 1).getY() > getHeight() / 2 - 200
+				&& p2.get(p2.size() - 1).getY() < getHeight() / 2 + 200) {
+			pile1++;
+			mode = 4;
+			p2Count--;
+			p2.remove(p2.size() - 1);
+			blocks1.add(new Block(blockColor, (getWidth() / 2 - d - 300) + (blocks1.size() * 30),
+					getHeight() / 2 - d + blocks1.size() * 30, d * 2, 10));
+			dragMode2 = false;
+		}
+
+		if (p1Count > 0 && p1.get(p1.size() - 1).getX() > getWidth() / 2 - d
+				&& p1.get(p1.size() - 1).getX() < getWidth() / 2 - d + 200
+				&& p1.get(p1.size() - 1).getY() > getHeight() / 2 - 200
+				&& p1.get(p1.size() - 1).getY() < getHeight() / 2 + 200) {
+			pile2++;
+			mode = 4;
+			p1Count--;
+			p1.remove(p1.size() - 1);
+			blocks2.add(new Block(blockColor, (getWidth() / 2 - d) + (blocks2.size() * 30),
+					getHeight() / 2 - d + blocks2.size() * 30, d * 2, 10));
+			dragMode = false;
+		}
+		if (p2Count > 0 && p2.get(p2.size() - 1).getX() > getWidth() / 2 - d
+				&& p2.get(p2.size() - 1).getX() < getWidth() / 2 - d + 200
+				&& p2.get(p2.size() - 1).getY() > getHeight() / 2 - 200
+				&& p2.get(p2.size() - 1).getY() < getHeight() / 2 + 200) {
+			pile2++;
+			mode = 4;
+			p2Count--;
+			p2.remove(p2.size() - 1);
+			blocks2.add(new Block(blockColor, (getWidth() / 2 - d) + (blocks2.size() * 30),
+					getHeight() / 2 - d + blocks2.size() * 30, d * 2, 10));
+			dragMode2 = false;
+		}
+
+		if (p1Count > 0 && p1.get(p1.size() - 1).getX() > getWidth() / 2 + 300 - d
+				&& p1.get(p1.size() - 1).getX() < getWidth() / 2 + 300 - d + 200
+				&& p1.get(p1.size() - 1).getY() > getHeight() / 2 - 200
+				&& p1.get(p1.size() - 1).getY() < getHeight() / 2 + 200) {
+			pile3++;
+			mode = 4;
+			p1Count--;
+			p1.remove(p1.size() - 1);
+			blocks3.add(new Block(blockColor, (getWidth() / 2 - d + 300) + (blocks3.size() * 30),
+					getHeight() / 2 - d + blocks3.size() * 30, d * 2, 10));
+			dragMode = false;
+		}
+		if (p2Count > 0 && p2.get(p2.size() - 1).getX() > getWidth() / 2 + 300 - d
+				&& p2.get(p2.size() - 1).getX() < getWidth() / 2 + 300 - d + 200
+				&& p2.get(p2.size() - 1).getY() > getHeight() / 2 - 200
+				&& p2.get(p2.size() - 1).getY() < getHeight() / 2 + 200) {
+			pile3++;
+			mode = 4;
+			p2Count--;
+			p2.remove(p2.size() - 1);
+			blocks3.add(new Block(blockColor, (getWidth() / 2 - d + 300) + (blocks3.size() * 30),
+					getHeight() / 2 - d + (blocks3.size() * 30), d * 2, 10));
+			dragMode2 = false;
+		}
+
+		if (p1Count > 0) {
+			p1.get(p1.size() - 1).setX(150 - (40));
+			p1.get(p1.size() - 1).setY(getHeight() - d + (30));
+		}
+
+		if (p2Count > 0) {
+			p2.get(p2.size() - 1).setX(getWidth() - d * 2 - (40) - 150 / 2);
+			p2.get(p2.size() - 1).setY(getHeight() - d + (30));
 		}
 	}
 
@@ -308,32 +330,10 @@ public class Game extends SimpleApp {
 		}
 	}
 
-	public boolean draggedOn1(int x) {
-		if (p1Count > 0 && p1.get(p1.size() - 1).getX() > getWidth() / 2 - 300 - d
-				&& p1.get(p1.size() - 1).getX() < getWidth() / 2 + x - d + 200
-				&& p1.get(p1.size() - 1).getY() > getHeight() / 2
-				&& p1.get(p1.size() - 1).getY() < getHeight() / 2 + 200 == true) {
-			return true;
-		}
-		return false;
-	}
-
-	public boolean draggedOn2(int x) {
-		if (p2Count > 0 && p2.get(p2.size() - 1).getX() > getWidth() / 2 - 300 - d
-				&& p2.get(p2.size() - 1).getX() < getWidth() / 2 + x - d + 200
-				&& p2.get(p2.size() - 1).getY() > getHeight() / 2
-				&& p2.get(p2.size() - 1).getY() < getHeight() / 2 + 200 == true) {
-			return true;
-		}
-		return false;
-	}
-	
-	public boolean removeBlock(int m, int p, ArrayList<Block> b, double x, double y)
-	{
+	public boolean removeBlock(int m, int p, ArrayList<Block> b, double x, double y) {
 		if ((mode == 0 || mode == m) && p > 0 && Math.abs(b.get(b.size() - 1).getX() - x) < d * 2
-				&& Math.abs(b.get(b.size() - 1).getY() - y) < d * 2
-				&& x > b.get(b.size() - 1).getX() && y > b.get(b.size() - 1).getY())
-		{
+				&& Math.abs(b.get(b.size() - 1).getY() - y) < d * 2 && x > b.get(b.size() - 1).getX()
+				&& y > b.get(b.size() - 1).getY()) {
 			return true;
 		}
 		return false;
